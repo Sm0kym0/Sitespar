@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>СПАР Миддл Волга</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="fade-in">
+        <div class="container">
+            <h1>СПАР Миддл Волга</h1>
+            <p>Качество, которому доверяют</p>
+        </div>
+    </header>
+
+    <nav class="slide-in">
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'stores' %}">Магазины</a>
+        <a href="{% url 'catalog' %}">Каталог</a>
+        <a href="{% url 'about' %}">О компании</a>
+        <a href="{% url 'contacts' %}">Контакты</a>
+    </nav>
+
+
+    <section class="banner zoom-in"></section>
+
+    <section class="content fade-up">
+        <div class="container">
+            <h2>О компании</h2>
+            <p><strong>ООО "СПАР Миддл Волга"</strong> — один из крупнейших продуктовых ретейлеров региона, предлагающий широкий ассортимент качественных товаров по доступным ценам. Мы развиваем сеть магазинов <strong>SPAR, EUROSPAR и SPAR Express</strong>, обеспечивая удобство и комфорт покупателям по всей Нижегородской области и за её пределами.</p>
+        </div>
+    </section>
+
+    <section class="news-section fade-up">
+        <div class="container">
+            <h2>Акции и новости</h2>
+            <div class="news-grid">
+                <div class="news-card">
+                    <h3>🎉 Весенняя распродажа!</h3>
+                    <p>С 15 по 30 апреля — скидки до 50% на фрукты, овощи и товары для пикника.</p>
+                </div>
+                <div class="news-card">
+                    <h3>🛒 Новые магазины</h3>
+                    <p>Открытие магазинов в Арзамасе, Кстове и Дзержинске — приходите за подарками!</p>
+                </div>
+                <div class="news-card">
+                    <h3>💳 Бонусная карта SPAR</h3>
+                    <p>Участвуйте в программе лояльности — бонусы за каждую покупку!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slider-section zoom-in">
+        <div class="container">
+            <h2>Наши предложения</h2>
+            <div class="slider">
+                <div class="slide active" style="background-image: url('https://moskidka.ru/wp-content/uploads/2024/05/spar-akcii-moskva-163-1.jpg');"></div>
+                <div class="slide" style="background-image: url('https://kamensk-uralskiy.compromesso.ru/contentcatalogue/8/04/d1/1.jpg');"></div>
+                <div class="slide" style="background-image: url('https://moskidka.ru/wp-content/uploads/2024/03/spar%20akcii%20moskva%20157%20(1).jpg');"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 СПАР Миддл Волга. Все права защищены.</p>
+    </footer>
+
+    <!-- JS для слайдера -->
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+
+        setInterval(() => {
+            slides[current].classList.remove('active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+        }, 4000);
+    </script>
+</body>
+</html>

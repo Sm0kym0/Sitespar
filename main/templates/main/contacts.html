@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Контакты | СПАР Миддл Волга</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .contact-container {
+            background: #fff;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .contact-container h2 {
+            color: #e30613;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            margin-bottom: 30px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .contact-form button {
+            background-color: #e30613;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #a9000d;
+        }
+
+        .success-msg {
+            color: green;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="fade-in">
+        <div class="container">
+            <h1>Контакты и обратная связь</h1>
+        </div>
+    </header>
+
+    <nav class="slide-in">
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'stores' %}">Магазины</a>
+        <a href="{% url 'catalog' %}">Каталог</a>
+        <a href="{% url 'about' %}">О компании</a>
+        <a href="{% url 'contacts' %}">Контакты</a>
+    </nav>
+
+    <section class="contact-container fade-up">
+        <h2>Свяжитесь с нами</h2>
+
+        <div class="contact-info">
+            <p><strong>Горячая линия:</strong> 8 800 555 35 35</p>
+            <p><strong>E-mail:</strong> reception@spar-nn.ru</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="success-msg">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" class="contact-form">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Ваше имя" required>
+            <input type="email" name="email" placeholder="Ваш Email" required>
+            <textarea name="message" placeholder="Ваше сообщение или предложение" rows="5" required></textarea>
+            <button type="submit">Отправить</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 СПАР Миддл Волга. Все права защищены.</p>
+    </footer>
+
+</body>
+</html>

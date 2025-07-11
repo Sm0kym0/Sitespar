@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог товаров</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .catalog { padding: 40px; }
+        .filters {
+            margin-bottom: 20px;
+        }
+        .filters a {
+            margin-right: 15px;
+            color: #e30613;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            width: 250px;
+            overflow: hidden;
+            padding: 20px;
+            text-align: center;
+        }
+        .product-card img {
+            max-width: 100%;
+            height: 180px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        .price {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .discount {
+            color: green;
+            font-weight: bold;
+            background: #f1f9f1;
+            padding: 3px 6px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="fade-in">
+        <div class="container">
+            <h1>Каталог товаров</h1>
+        </div>
+    </header>
+
+    <nav class="slide-in">
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'stores' %}">Магазины</a>
+        <a href="{% url 'catalog' %}">Каталог</a>
+        <a href="{% url 'about' %}">О компании</a>
+        <a href="{% url 'contacts' %}">Контакты</a>
+    </nav>
+
+    <section class="catalog fade-up">
+        <div class="container">
+            <div class="filters">
+                <a href="{% url 'catalog' %}">Все</a>
+                <a href="?category=food">Продукты</a>
+                <a href="?category=drinks">Напитки</a>
+                <a href="?category=home">Товары для дома</a>
+            </div>
+
+            <div class="product-grid">
+                {% for product in products %}
+                    <div class="product-card">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'img/no-image.png' %}" alt="Нет фото">
+                        {% endif %}
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.description|truncatechars:60 }}</p>
+                        <div class="price">{{ product.price }} ₽</div>
+                        {% if product.is_discounted %}
+                            <div class="discount">Акция!</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 СПАР Миддл Волга. Все права защищены.</p>
+    </footer>
+</body>
+</html>

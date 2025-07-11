@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазины | СПАР Миддл Волга</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 400px; margin-bottom: 20px; border-radius: 10px; }
+        .store-list { display: flex; flex-wrap: wrap; gap: 20px; }
+        .store-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            flex: 1 1 45%;
+            transition: transform 0.3s;
+        }
+        .store-card:hover {
+            transform: scale(1.02);
+        }
+        form {
+            margin: 20px 0;
+        }
+        form input[type="text"] {
+            padding: 8px;
+            width: 220px;
+        }
+        form button {
+            padding: 8px 16px;
+            background-color: #e30613;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #a9000d;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="fade-in">
+        <div class="container">
+            <h1>СПАР Миддл Волга</h1>
+            <p>Качество, которому доверяют</p>
+        </div>
+    </header>
+
+     <nav class="slide-in">
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'stores' %}">Магазины</a>
+        <a href="{% url 'catalog' %}">Каталог</a>
+        <a href="{% url 'about' %}">О компании</a>
+        <a href="{% url 'contacts' %}">Контакты</a>
+    </nav>
+
+    <section class="content fade-up">
+        <div class="container">
+            <h2>Наши магазины</h2>
+
+            <form method="get">
+                <input type="text" name="q" placeholder="Поиск по городу/району" value="{{ query }}">
+                <label><input type="checkbox" name="kitchen" {% if filters.kitchen %}checked{% endif %}> Кулинария</label>
+                <label><input type="checkbox" name="bakery" {% if filters.bakery %}checked{% endif %}> Пекарня</label>
+                <label><input type="checkbox" name="delivery" {% if filters.delivery %}checked{% endif %}> Доставка</label>
+                <button type="submit">Найти</button>
+            </form>
+
+            <div id="map"></div>
+
+            <div class="store-list">
+                {% for store in stores %}
+                    <div class="store-card">
+                        <h3>{{ store.name }}</h3>
+                        <p><strong>Адрес:</strong> {{ store.address }}</p>
+                        <p><strong>Город:</strong> {{ store.city }}</p>
+                        <p><strong>Часы работы:</strong> {{ store.hours }}</p>
+                        <ul>
+                            {% if store.has_kitchen %}<li>Кулинария</li>{% endif %}
+                            {% if store.has_bakery %}<li>Пекарня</li>{% endif %}
+                            {% if store.has_delivery %}<li>Доставка</li>{% endif %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 СПАР Миддл Волга. Все права защищены.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([56.3287, 44.0020], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        {% for store in stores %}
+            L.marker([{{ store.latitude }}, {{ store.longitude }}]).addTo(map)
+                .bindPopup("<strong>{{ store.name }}</strong><br>{{ store.address }}<br>{{ store.hours }}");
+        {% endfor %}
+    </script>
+</body>
+</html>
